@@ -1,7 +1,7 @@
 package types
 
 import (
-	"../apiclient"
+	"../exchangeclients"
 	krakenapi "github.com/beldur/kraken-go-api-client"
 	log "github.com/cihub/seelog"
 	"strconv"
@@ -11,11 +11,12 @@ import (
 var wg sync.WaitGroup
 
 type State struct {
-	currentPrice float64
-	openOrders   []string
-	balance      Balance
+	CurrentPrice float64
+	OpenOrders   []string
+	Balance      Balance
 }
 
+// Public method to refresh all data async
 func (s *State) RefreshAll() {
 	wg.Add(3)
 
@@ -26,10 +27,11 @@ func (s *State) RefreshAll() {
 	wg.Wait()
 }
 
+// Get the current ticker price
 func (s *State) refreshPrice() {
 	defer wg.Done()
 
-	ticker, err := apiclient.KrakenClient.Ticker(krakenapi.XXBTZEUR)
+	ticker, err := exchangeclients.Kraken.Ticker(krakenapi.XXBTZEUR)
 	if err != nil {
 		log.Errorf("[state.refresh.ticker] %v", err)
 	}
@@ -37,28 +39,38 @@ func (s *State) refreshPrice() {
 	if err != nil {
 		log.Errorf("[state.refresh.parsePrice] %v", err)
 	}
-	s.currentPrice = currentPrice
+	s.CurrentPrice = currentPrice
 }
 
+// Get the latest account balance
 func (s *State) refreshBalance() {
 	defer wg.Done()
 
-	balance, err := apiclient.KrakenClient.Balance()
+	balance, err := exchangeclients.Kraken.Balance()
 	if err != nil {
 		log.Errorf("[state.refresh.balance] %v", err)
 	}
-	s.balance = Balance{
-		BTC: round_balance(balance.XXBT),
-		EUR: round_balance(balance.ZEUR),
+	if balance == nil {
+		return
+	}
+	s.Balance = Balance{
+		BTC: balance.XXBT,
+		EUR: balance.ZEUR,
 	}
 }
 
+// Get the list of current open orders so they can be cancelled
 func (s *State) refreshOrders() {
 	defer wg.Done()
 
-	orders, err := apiclient.KrakenClient.OpenOrders(nil)
+	orders, err := exchangeclients.Kraken.OpenOrders(nil)
 	if err != nil {
 		log.Errorf("[state.refresh.orders] %v", err)
+	}
+	if orders == nil {
+		s.OpenOrders = []string{}
+
+		return
 	}
 
 	var orderList []string
@@ -66,13 +78,23 @@ func (s *State) refreshOrders() {
 		orderList = append(orderList, k)
 	}
 
-	s.openOrders = orderList
+	s.OpenOrders = orderList
 }
 
-func round_balance(value float64) float64 {
-	if value > 0.0001 {
-		return value
+// Cancel all open orders
+func (s *State) CancelOrders() {
+	for _, order := range s.OpenOrders {
+		_, err := exchangeclients.Kraken.CancelOrder(order)
+		if err != nil {
+			log.Errorf("[state.cancel.order] %v", err)
+		}
 	}
+}
 
-	return 0
+// Send market sell
+func (s *State) TriggerStopOrder() {
+	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", strconv.FormatFloat(s.Balance.BTC, 'f', 4, 64), nil)
+	if err != nil {
+		log.Errorf("[state.triggerstop] %v", err)
+	}
 }

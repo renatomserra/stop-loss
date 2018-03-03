@@ -1,21 +1,24 @@
 package main
 
 import (
-	"./types"
-	"fmt"
-	"time"
+	"./commsclients"
+	"./core"
+	"./exchangeclients"
+	"./handlers"
+	log "github.com/cihub/seelog"
+	"github.com/gorilla/mux"
+	"net/http"
 )
 
 func main() {
-	state := types.State{}
-	fmt.Println(state)
+	core.LoadEnvVars()
+	commsclients.Load()
+	exchangeclients.Load()
+	commsclients.Telegram.Send(commsclients.TelegramUser, "Bot Started up!")
 
-	start := time.Now()
+	go core.CheckPrices()
 
-	state.RefreshAll()
-
-	end := time.Now()
-
-	fmt.Println(state)
-	fmt.Printf("Time Elapsed: %v", end.Sub(start))
+	router := mux.NewRouter()
+	router.HandleFunc("/health", handlers.HealthEndpointHandler).Methods("GET")
+	log.Critical(http.ListenAndServe(":5555", router))
 }
