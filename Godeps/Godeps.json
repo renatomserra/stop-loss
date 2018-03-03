@@ -1,0 +1,8 @@
+{
+    "ImportPath": "stop-loss",
+    "GoVersion": "go1.10",
+    "Packages": [
+        "./…"
+    ],
+    "Deps": []
+}
