@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"github.com/RenatoSerra22/stop-loss/commsclients"
 	"github.com/RenatoSerra22/stop-loss/exchangeclients"
 	krakenapi "github.com/beldur/kraken-go-api-client"
 	log "github.com/cihub/seelog"
@@ -55,7 +56,7 @@ func (s *State) refreshBalance() {
 		return
 	}
 	if s.Balance.BTC != balance.XXBT || s.Balance.EUR != balance.ZEUR {
-		message = fmt.Sprintf("New Balance BTC: %v, EUR: %v", balance.XXBT, balance.ZEUR)
+		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v", balance.XXBT, balance.ZEUR)
 		commsclients.Telegram.Send(commsclients.TelegramUser, message)
 	}
 	s.Balance = Balance{
