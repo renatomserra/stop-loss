@@ -14,6 +14,7 @@ func main() {
 	core.LoadEnvVars()
 	commsclients.Load()
 	exchangeclients.Load()
+	addr, err := determineListenAddress()
 
 	commsclients.Telegram.Send(commsclients.TelegramUser, "Bot Started up!")
 
@@ -21,5 +22,13 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/health", handlers.HealthEndpointHandler).Methods("GET")
-	log.Critical(http.ListenAndServe(":5555", router))
+	log.Critical(http.ListenAndServe(addr, router))
+}
+
+func determineListenAddress() (string, error) {
+	port := os.Getenv("PORT")
+	if port == "" {
+		return "", fmt.Errorf("$PORT not set")
+	}
+	return ":" + port, nil
 }
