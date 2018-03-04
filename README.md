@@ -1,7 +1,6 @@
-# Kraken Stop Loss bot
-
 ![Kraken](https://themerkle.com/wp-content/uploads/2016/05/Kraken-Exchange.jpg)
 
+# Kraken Stop Loss bot
 Kraken has disabled stop losses so i created this bot.
 If the price for BTC to EUR is lower than your set stop loss, all your open orders are cancelled, otherwise kraken might reject the order as your funds can be locked to an open order and then a market sell is placed for the full amount of BTC held.
 You will be notified at every step through telegram.
