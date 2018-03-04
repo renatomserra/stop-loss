@@ -16,7 +16,7 @@ func main() {
 	core.LoadEnvVars()
 	commsclients.Load()
 	exchangeclients.Load()
-	addr, err := determineListenAddress()
+	addr, _ := determineListenAddress()
 
 	commsclients.Telegram.Send(commsclients.TelegramUser, "Bot Started up!")
 
