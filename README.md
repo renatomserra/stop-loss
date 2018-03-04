@@ -1,4 +1,4 @@
-![Kraken](https://themerkle.com/wp-content/uploads/2016/05/Kraken-Exchange.jpg)
+![Kraken](https://kryptomoney.com/wp-content/uploads/2017/04/20160530dffda5368f33f1694_th_1024x0.jpg)
 
 # Kraken Stop Loss bot
 Kraken has disabled stop losses so i created this bot.
