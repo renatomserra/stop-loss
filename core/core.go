@@ -1,8 +1,8 @@
 package core
 
 import (
-	"../commsclients"
-	"../types"
+	"./commsclients"
+	"./types"
 	log "github.com/cihub/seelog"
 	"github.com/joho/godotenv"
 	"os"

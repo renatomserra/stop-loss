@@ -1,8 +1,56 @@
 {
-    "ImportPath": "main",
-    "GoVersion": "go1.10",
-    "Packages": [
-        "./…"
-    ],
-    "Deps": []
+	"ImportPath": "github.com/stop-loss",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v80",
+	"Deps": [
+		{
+			"ImportPath": "github.com/beldur/kraken-go-api-client",
+			"Rev": "8d8ccfe4cc60d1703ffe596c889b887a318a884c"
+		},
+		{
+			"ImportPath": "github.com/cihub/seelog",
+			"Comment": "v2.6-31-gf561c5e",
+			"Rev": "f561c5e57575bb1e0a2167028b7339b3a8d16fb4"
+		},
+		{
+			"ImportPath": "github.com/cihub/seelog/archive",
+			"Comment": "v2.6-31-gf561c5e",
+			"Rev": "f561c5e57575bb1e0a2167028b7339b3a8d16fb4"
+		},
+		{
+			"ImportPath": "github.com/cihub/seelog/archive/gzip",
+			"Comment": "v2.6-31-gf561c5e",
+			"Rev": "f561c5e57575bb1e0a2167028b7339b3a8d16fb4"
+		},
+		{
+			"ImportPath": "github.com/cihub/seelog/archive/tar",
+			"Comment": "v2.6-31-gf561c5e",
+			"Rev": "f561c5e57575bb1e0a2167028b7339b3a8d16fb4"
+		},
+		{
+			"ImportPath": "github.com/cihub/seelog/archive/zip",
+			"Comment": "v2.6-31-gf561c5e",
+			"Rev": "f561c5e57575bb1e0a2167028b7339b3a8d16fb4"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.6.1-12-g07ba1fd",
+			"Rev": "07ba1fd60e210dc5cc6f86ec25dc9ecc7c95c295"
+		},
+		{
+			"ImportPath": "github.com/joho/godotenv",
+			"Comment": "v1.2.0-10-g6bb0851",
+			"Rev": "6bb08516677f8c8274c557fc801bee9ab564ab2c"
+		},
+		{
+			"ImportPath": "github.com/pkg/errors",
+			"Comment": "v0.8.0-11-g30136e2",
+			"Rev": "30136e27e2ac8d167177e8a583aa4c3fea5be833"
+		},
+		{
+			"ImportPath": "gopkg.in/tucnak/telebot.v2",
+			"Comment": "ver2.0-24-g2414620",
+			"Rev": "24146200389c0856503e7f9a40d21170e55692a2"
+		}
+	]
 }
