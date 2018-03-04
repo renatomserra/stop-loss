@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/RenatoSerra22/stop-loss/commsclients"
 	"github.com/RenatoSerra22/stop-loss/core"
 	"github.com/RenatoSerra22/stop-loss/exchangeclients"
@@ -8,6 +9,7 @@ import (
 	log "github.com/cihub/seelog"
 	"github.com/gorilla/mux"
 	"net/http"
+	"os"
 )
 
 func main() {
