@@ -1,7 +1,7 @@
 package types
 
 import (
-	"./exchangeclients"
+	"github.com/RenatoSerra22/stop-loss/exchangeclients"
 	krakenapi "github.com/beldur/kraken-go-api-client"
 	log "github.com/cihub/seelog"
 	"strconv"

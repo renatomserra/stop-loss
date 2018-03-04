@@ -1,8 +1,8 @@
 package core
 
 import (
-	"./commsclients"
-	"./types"
+	"github.com/RenatoSerra22/stop-loss/commsclients"
+	"github.com/RenatoSerra22/stop-loss/types"
 	log "github.com/cihub/seelog"
 	"github.com/joho/godotenv"
 	"os"

@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/stop-loss",
+	"ImportPath": "github.com/RenatoSerra22/stop-loss",
 	"GoVersion": "go1.9",
 	"GodepVersion": "v80",
 	"Deps": [
