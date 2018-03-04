@@ -34,7 +34,7 @@ func CheckPrices() {
 	}
 }
 
-func StopLoss() float64 {
+func LoadDefaultStopLoss() float64 {
 	value, err := strconv.ParseFloat(os.Getenv("STOP_LOSS_AT"), 64)
 	if err != nil {
 		panic(err)
@@ -49,5 +49,5 @@ func LoadEnvVars() {
 		log.Error(err)
 	}
 
-	StopLossLimit = StopLoss()
+	StopLossLimit = LoadDefaultStopLoss()
 }
