@@ -55,9 +55,9 @@ func (s *State) refreshBalance() {
 	if balance == nil {
 		return
 	}
-	if s.Balance.BTC != balance.XXBT || s.Balance.EUR != balance.ZEUR {
-		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v", balance.XXBT, balance.ZEUR)
-		commsclients.Telegram.Send(commsclients.TelegramUser, message)
+	if s.Balance.BTC != balance.XXBT || s.Balance.EUR != balance.ZEUR { //Balance has changed, update
+		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v€", balance.XXBT, balance.ZEUR)
+		go commsclients.Telegram.Send(commsclients.TelegramUser, message)
 	}
 	s.Balance = Balance{
 		BTC: balance.XXBT,
