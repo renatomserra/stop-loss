@@ -18,4 +18,4 @@ You can check the app is alive via telegram with /alive and an endpoint "/health
 # Running locally
 
 - Just run `go run main.go` to run the app
-- App has dotenv setup so you can configure your env vars in a .env
+- App has dotenv setup so you can configure your env vars in a `.env` file
