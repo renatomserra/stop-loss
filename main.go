@@ -14,6 +14,7 @@ func main() {
 	core.LoadEnvVars()
 	commsclients.Load()
 	exchangeclients.Load()
+
 	commsclients.Telegram.Send(commsclients.TelegramUser, "Bot Started up!")
 
 	go core.CheckPrices()
