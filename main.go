@@ -21,6 +21,7 @@ func main() {
 	commsclients.Telegram.Send(commsclients.TelegramUser, "Bot Started up!")
 
 	go core.CheckPrices()
+	go commsclients.Telegram.Start()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/health", handlers.HealthEndpointHandler).Methods("GET")

@@ -23,8 +23,6 @@ func Load() {
 		b.Send(m.Sender, "Yeah man, im good")
 	})
 
-	b.Start()
-
 	teleId, err := strconv.Atoi(os.Getenv("TELEGRAM_CHAT_ID"))
 	if err != nil {
 
