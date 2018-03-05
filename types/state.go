@@ -36,10 +36,12 @@ func (s *State) refreshPrice() {
 	ticker, err := exchangeclients.Kraken.Ticker(krakenapi.XXBTZEUR)
 	if err != nil {
 		log.Errorf("[state.refresh.ticker] %v", err)
+		return
 	}
 	currentPrice, err := strconv.ParseFloat(ticker.XXBTZEUR.Bid[0], 64)
 	if err != nil {
 		log.Errorf("[state.refresh.parsePrice] %v", err)
+		return
 	}
 	s.CurrentPrice = currentPrice
 }
@@ -51,10 +53,9 @@ func (s *State) refreshBalance() {
 	balance, err := exchangeclients.Kraken.Balance()
 	if err != nil {
 		log.Errorf("[state.refresh.balance] %v", err)
-	}
-	if balance == nil {
 		return
 	}
+
 	if s.Balance.BTC != balance.XXBT || s.Balance.EUR != balance.ZEUR { //Balance has changed, update
 		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v€", balance.XXBT, balance.ZEUR)
 		go commsclients.Telegram.Send(commsclients.TelegramUser, message)
@@ -72,6 +73,7 @@ func (s *State) refreshOrders() {
 	orders, err := exchangeclients.Kraken.OpenOrders(nil)
 	if err != nil {
 		log.Errorf("[state.refresh.orders] %v", err)
+		return
 	}
 	if orders == nil {
 		s.OpenOrders = []string{}
@@ -93,6 +95,7 @@ func (s *State) CancelOrders() {
 		_, err := exchangeclients.Kraken.CancelOrder(order)
 		if err != nil {
 			log.Errorf("[state.cancel.order] %v", err)
+			return
 		}
 	}
 }
@@ -102,5 +105,6 @@ func (s *State) TriggerStopOrder() {
 	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", strconv.FormatFloat(s.Balance.BTC, 'f', 4, 64), nil)
 	if err != nil {
 		log.Errorf("[state.triggerstop] %v", err)
+		return
 	}
 }
