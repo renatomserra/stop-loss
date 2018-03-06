@@ -16,6 +16,7 @@ You can check the app is alive via telegram with /alive command or through the A
 - TELEGRAM_TOKEN `A token you get when creating a telegram bot through BotFather`
 - TELEGRAM_CHAT_ID `Start a chat with the created bot and use the /alive action to print your id and set it here`
 - PORT `Default port the app should run in`
+- CHECK_FOR_DIP `if true this waits 5 seconds after finding a potential stop loss, checks price agian, if still below threshold will sell`
 
 # Running locally
 
