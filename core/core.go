@@ -26,12 +26,31 @@ func CheckPrices() {
 			state.CancelOrders()
 			go commsclients.Telegram.Send(commsclients.TelegramUser, "All existing orders cancelled!!")
 
-			state.TriggerStopOrder()
-			go commsclients.Telegram.Send(commsclients.TelegramUser, "Sold all the things")
+			if shouldSell() {
+				state.TriggerStopOrder()
+				go commsclients.Telegram.Send(commsclients.TelegramUser, "Sold all the things")
+			}
 		}
 
 		time.Sleep(15 * time.Second)
 	}
+}
+
+// Check if it was a quick dip before selling, wait 5 seconds re-check price still below
+func shouldSell() bool {
+	if os.Getenv("CHECK_FOR_DIP") == "true" {
+		time.Sleep(5 * time.Second)
+
+		currentPrice, err := types.FetchPrice()
+		if err != nil {
+			log.Errorf("[state.isDip] %v", err)
+			return false
+		} else if currentPrice > StopLossLimit {
+			return false
+		}
+	}
+
+	return true
 }
 
 func LoadDefaultStopLoss() float64 {

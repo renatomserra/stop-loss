@@ -33,14 +33,9 @@ func (s *State) RefreshAll() {
 func (s *State) refreshPrice() {
 	defer wg.Done()
 
-	ticker, err := exchangeclients.Kraken.Ticker(krakenapi.XXBTZEUR)
+	currentPrice, err := FetchPrice()
 	if err != nil {
-		log.Errorf("[state.refresh.ticker] %v", err)
-		return
-	}
-	currentPrice, err := strconv.ParseFloat(ticker.XXBTZEUR.Bid[0], 64)
-	if err != nil {
-		log.Errorf("[state.refresh.parsePrice] %v", err)
+		log.Errorf("[state.refresh.price] %v", err)
 		return
 	}
 	s.CurrentPrice = currentPrice
@@ -107,4 +102,16 @@ func (s *State) TriggerStopOrder() {
 		log.Errorf("[state.triggerstop] %v", err)
 		return
 	}
+}
+
+func FetchPrice() (float64, error) {
+	ticker, err := exchangeclients.Kraken.Ticker(krakenapi.XXBTZEUR)
+	if err != nil {
+		return 0, err
+	}
+	currentPrice, err := strconv.ParseFloat(ticker.XXBTZEUR.Bid[0], 64)
+	if err != nil {
+		return 0, err
+	}
+	return currentPrice, nil
 }
