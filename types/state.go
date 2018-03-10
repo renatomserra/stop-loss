@@ -106,7 +106,7 @@ func (s *State) HasPosition() bool {
 // Send market sell
 func (s *State) TriggerStopOrder() {
 	///Kraken rounds numbers making this fail, it will fail to place the order because we dont own the rounded balance
-	sell_volume := strconv.FormatFloat(s.Balance.BTC-0.00002, 'f', 5, 64)
+	sell_volume := strconv.FormatFloat(s.Balance.BTC-0.00001, 'f', 5, 64)
 	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", sell_volume, nil)
 	if err != nil {
 		log.Errorf("[state.triggerstop] %v ", err)
