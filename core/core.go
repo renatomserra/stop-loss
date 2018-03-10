@@ -21,10 +21,10 @@ func CheckPrices() {
 
 		if state.CurrentPrice < StopLossLimit && state.HasPosition() {
 			log.Infof("[main.priceCheck] Stop hit, sell all the things")
-			go commsclients.Telegram.Send(commsclients.TelegramUser, "Stop Loss triggered!!")
+			go commsclients.Telegram.Send(commsclients.TelegramUser, "Stop Loss price reached, cancelling orders!!")
 
 			state.CancelOrders()
-			go commsclients.Telegram.Send(commsclients.TelegramUser, "All existing orders cancelled!!")
+			go commsclients.Telegram.Send(commsclients.TelegramUser, "All existing orders cancelled!!, checking for fake dip")
 
 			if shouldSell() {
 				state.TriggerStopOrder()
