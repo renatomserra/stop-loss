@@ -50,13 +50,15 @@ func (s *State) refreshBalance() {
 		log.Errorf("[state.refresh.balance] %v", err)
 		return
 	}
+	///Kraken rounds numbers making this fail, it will fail to place the order because we dont own the rounded balance
+	btc_balance := strconv.FormatFloat(balance.XXBT-0.00001, 'f', 5, 64)
 
-	if s.Balance.BTC != balance.XXBT || s.Balance.EUR != balance.ZEUR { //Balance has changed, update
-		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v€", balance.XXBT, balance.ZEUR)
+	if s.Balance.BTC != btc_balance || s.Balance.EUR != balance.ZEUR { //Balance has changed, update
+		message := fmt.Sprintf("New Balance BTC: %v, EUR: %v€", btc_balance, balance.ZEUR)
 		go commsclients.Telegram.Send(commsclients.TelegramUser, message)
 	}
 	s.Balance = Balance{
-		BTC: balance.XXBT,
+		BTC: btc_balance,
 		EUR: balance.ZEUR,
 	}
 }
@@ -105,9 +107,7 @@ func (s *State) HasPosition() bool {
 
 // Send market sell
 func (s *State) TriggerStopOrder() {
-	///Kraken rounds numbers making this fail, it will fail to place the order because we dont own the rounded balance
-	sell_volume := strconv.FormatFloat(s.Balance.BTC-0.00001, 'f', 5, 64)
-	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", sell_volume, nil)
+	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", s.Balance.BTC, nil)
 	if err != nil {
 		log.Errorf("[state.triggerstop] %v ", err)
 		message := fmt.Sprintf("Failed to sell with volume %v because: %v", sell_volume, err)
