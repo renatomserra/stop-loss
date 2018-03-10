@@ -95,13 +95,26 @@ func (s *State) CancelOrders() {
 	}
 }
 
+// Cancel all open orders
+func (s *State) HasPosition() bool {
+	if s.Balance.BTC > 0.00001 {
+		return true
+	}
+	return false
+}
+
 // Send market sell
 func (s *State) TriggerStopOrder() {
-	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", strconv.FormatFloat(s.Balance.BTC, 'f', 4, 64), nil)
+	///Kraken rounds numbers making this fail, it will fail to place the order because we dont own the rounded balance
+	sell_volume := strconv.FormatFloat(s.Balance.BTC-0.00002, 'f', 5, 64)
+	_, err := exchangeclients.Kraken.AddOrder("XXBTZEUR", "sell", "market", sell_volume, nil)
 	if err != nil {
-		log.Errorf("[state.triggerstop] %v", err)
+		log.Errorf("[state.triggerstop] %v ", err)
+		message := fmt.Sprintf("Failed to sell with volume %v because: %v", sell_volume, err)
+		go commsclients.Telegram.Send(commsclients.TelegramUser, message)
 		return
 	}
+	go commsclients.Telegram.Send(commsclients.TelegramUser, "Sold all the things")
 }
 
 func FetchPrice() (float64, error) {
